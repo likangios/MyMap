@@ -7,17 +7,63 @@
 //
 
 #import "ReadViewController.h"
+#import "MoreViewController.h"
 
 @interface ReadViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate>
+{
+    UIPageViewController *_pageVC;
+}
+
+@property (nonatomic,strong) NSArray *pageContent;
 
 @end
 
 @implementation ReadViewController
 
+- (void)creatContentPages{
+    NSMutableArray *array = [NSMutableArray array];
+    
+    
+    for (int i = 0; i<10; i++) {
+        
+        NSDictionary *diction = [[NSDictionary dictionaryWithDictionary:self.dic] mutableCopy];
+
+        [diction setValue:[NSString stringWithFormat:@"%d",i] forKey:@"customID"];
+        
+        [array addObject:diction];
+    }
+    _pageContent = [NSArray arrayWithArray:array];
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self creatContentPages];
+    self.title = self.dic[@"bookname"];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.view.backgroundColor = [UIColor colorWithRed:.9 green:0.8 blue:0.7 alpha:1.0];
     
+    [self creatItem];
+    
+    self.navigationController.hidesBarsOnTap = YES;
+
+    
+   _pageVC = [[UIPageViewController alloc]initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+    _pageVC.view.frame = self.view.bounds;
+    _pageVC.doubleSided = YES;
+    _pageVC.delegate = self;
+    _pageVC.dataSource = self;
+    NSArray *arr = [NSArray arrayWithObjects:[self viewControllerAtIndex:0],nil];
+   
+    [_pageVC setViewControllers:arr direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
+    
+    }];
+    [self addChildViewController:_pageVC];
+    
+    [self.view addSubview:_pageVC.view];
+    
+}
+- (void)creatItem{
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"button_back_on"] style:UIBarButtonItemStylePlain target:self action:@selector(backClick)];
     leftItem.tintColor = [UIColor grayColor];
     self.navigationItem.leftBarButtonItem = leftItem;
@@ -26,40 +72,51 @@
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"button_shuqian_on"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemClick)];
     rightItem.tintColor = [UIColor grayColor];
     self.navigationItem.rightBarButtonItem = rightItem;
+}
+- (MoreViewController *)viewControllerAtIndex:(NSInteger)index{
+    if (index>=self.pageContent.count||self.pageContent == 0) {
+        return nil ;
+    }
+    MoreViewController *more = [[MoreViewController alloc]init];
+    more.content = self.pageContent[index];
     
+    return more;
+}
+
+- (NSInteger)indexOfViewController:(MoreViewController *)viewcontroller{
     
-    self.view.backgroundColor = [UIColor colorWithRed:.9 green:0.8 blue:0.7 alpha:1.0];
+    NSInteger index =[self.pageContent indexOfObject:viewcontroller.content];
     
-    self.title = self.dic[@"bookname"];
-//    
-//    UIPageViewController *pagview = [[UIPageViewController alloc]initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-//    pagview.doubleSided = YES;
-//    pagview.delegate = self;
-//    pagview.dataSource = self;
-//    NSMutableArray *arr = [NSMutableArray array];
-//    
-//    for (int i = 0; i<2; i++) {
-//        UIViewController *vvv = [[UIViewController alloc]init];
-//        vvv.view.backgroundColor = [UIColor colorWithRed:(i*20+100)/255.0 green:(i*20+200)/255.0 blue:(i*20+150)/255.0 alpha:1.0];
-//        [arr addObject:vvv];
-//    }
-//    
-//    [pagview setViewControllers:arr direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
-//    
-//    }];
-//    
-//    [self.view addSubview:pagview.view];
+    NSLog(@"--index%ld ",(long)index);
+    
+    return index;
     
 }
 -(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController{
-    UIViewController *view = [[UIViewController alloc]init];
-    view.view.backgroundColor = [UIColor greenColor];
-    return view;
+
+    NSInteger index = [self indexOfViewController:(MoreViewController *)viewController];
+
+    NSLog(@"After--index%ld ",(long)index);
+    
+    if (index == NSNotFound||index == (self.pageContent.count-1)) {
+        return nil  ;
+    }
+    index++;
+    
+    return [self viewControllerAtIndex:index];
 }
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController{
-    UIViewController *view = [[UIViewController alloc]init];
-    view.view.backgroundColor = [UIColor orangeColor];
-    return view;
+    
+    NSInteger index = [self indexOfViewController:(MoreViewController *)viewController];
+   
+    NSLog(@"Before--index%ld ",(long)index);
+
+    if (index == NSNotFound||index == 0) {
+        return nil  ;
+    }
+    index--;
+    
+    return [self viewControllerAtIndex:index];
 }
 #pragma action
 - (void)backClick{
