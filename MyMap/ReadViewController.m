@@ -12,6 +12,14 @@
 @interface ReadViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate>
 {
     UIPageViewController *_pageVC;
+    /**
+     *  标题
+     */
+    UILabel *_titleLabel;
+    /**
+     *  页码
+     */
+    UILabel *_pageNumberLabel;
 }
 
 @property (nonatomic,strong) NSArray *pageContent;
@@ -42,11 +50,7 @@
     self.title = self.dic[@"bookname"];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor colorWithRed:.9 green:0.8 blue:0.7 alpha:1.0];
-    
     [self creatItem];
-    
-    self.navigationController.hidesBarsOnTap = YES;
-
     
    _pageVC = [[UIPageViewController alloc]initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     _pageVC.view.frame = self.view.bounds;
@@ -65,13 +69,34 @@
 }
 - (void)creatItem{
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"button_back_on"] style:UIBarButtonItemStylePlain target:self action:@selector(backClick)];
+    
     leftItem.tintColor = [UIColor grayColor];
+    
     self.navigationItem.leftBarButtonItem = leftItem;
     
     
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"button_shuqian_on"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemClick)];
+    
     rightItem.tintColor = [UIColor grayColor];
+    
     self.navigationItem.rightBarButtonItem = rightItem;
+    
+    self.navigationController.hidesBarsOnTap = YES;
+
+    _titleLabel = [[UILabel alloc]init];
+    _titleLabel.bounds = CGRectMake(0, 0, 100, 44);
+    _titleLabel.text= @"封面";
+    _titleLabel.textAlignment = NSTextAlignmentCenter;
+    _titleLabel.center = CGPointMake(Screen_width/2.0, 42);
+    [self.view addSubview:_titleLabel];
+    
+    
+    _pageNumberLabel  = [[UILabel alloc]init];
+    _pageNumberLabel.bounds = CGRectMake(0, 0, 30, 44);
+    _pageNumberLabel.text = @"1/1";
+    _pageNumberLabel.textAlignment = NSTextAlignmentRight;
+    _pageNumberLabel.center  =CGPointMake(Screen_width-40, 42);
+    [self.view addSubview:_pageNumberLabel];
 }
 - (MoreViewController *)viewControllerAtIndex:(NSInteger)index{
     if (index>=self.pageContent.count||self.pageContent == 0) {
