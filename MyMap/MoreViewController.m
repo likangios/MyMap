@@ -9,27 +9,20 @@
 #import "MoreViewController.h"
 
 @interface MoreViewController ()
-
+{
+    UILabel *_contentLabel;
+}
 @end
 
 @implementation MoreViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 70, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-70)];
-    label.backgroundColor = [UIColor colorWithRed:arc4random()%10/10.0 green:arc4random()%10/10.0 blue:arc4random()%10/10.0 alpha:1.0];
-    label.text = self.content[@"bookname"];
-    [self.view addSubview:label];
     
-    UIImageView *imageview = [[UIImageView alloc]initWithFrame:CGRectMake(20, 90, 70, 92)];
-    
-    NSString *path = [[[NSBundle mainBundle] pathsForResourcesOfType:@".jpg" inDirectory:self.content[@"img"]] firstObject];
-    
-    [imageview setImage:[UIImage imageWithContentsOfFile:path]];
-    
-    
-    [self.view addSubview:imageview];
-    
+    _contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 70, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-70)];
+    _contentLabel.backgroundColor = [UIColor colorWithRed:arc4random()%10/10.0 green:arc4random()%10/10.0 blue:arc4random()%10/10.0 alpha:1.0];
+    _contentLabel.text = self.content;
+    [self.view addSubview:_contentLabel];
     // Do any additional setup after loading the view.
 }
 

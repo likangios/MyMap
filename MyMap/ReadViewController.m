@@ -8,6 +8,8 @@
 
 #import "ReadViewController.h"
 #import "MoreViewController.h"
+#import "FengMianViewController.h"
+
 
 @interface ReadViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate>
 {
@@ -28,10 +30,25 @@
 
 @implementation ReadViewController
 
+
+- (id)JSONSerializationWithString:(NSString*)jsonString{
+    
+    NSData *data = [NSData dataWithContentsOfFile:jsonString];
+    
+    id obj =[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    
+    return obj;
+}
+
 - (void)creatContentPages{
+    
+    
     NSMutableArray *array = [NSMutableArray array];
     
+    NSArray *txts = [[NSBundle mainBundle] pathsForResourcesOfType:@"txt" inDirectory:[NSString stringWithFormat:@"/novel_zip/novel_content/book_%@",self.dic[@"id"]]];
     
+    NSDictionary *dic = [self JSONSerializationWithString:[txts lastObject]];
+
     for (int i = 0; i<10; i++) {
         
         NSDictionary *diction = [[NSDictionary dictionaryWithDictionary:self.dic] mutableCopy];
@@ -42,10 +59,12 @@
     }
     _pageContent = [NSArray arrayWithArray:array];
     
+    
+    
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self creatContentPages];
     self.title = self.dic[@"bookname"];
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -67,6 +86,74 @@
     [self.view addSubview:_pageVC.view];
     
 }
+
+- (UIViewController *)viewControllerAtIndex:(NSInteger)index{
+    
+    if (index>=self.pageContent.count||self.pageContent == 0) {
+        return nil ;
+    }
+    if (index == 0) {
+        FengMianViewController *fengmian = [[FengMianViewController alloc]init];
+        
+        fengmian.BIntroduction = self.dic[@"info"];
+        NSString *img = self.dic[@"img"];
+        UIImage *imag = [UIImage imageNamed:[[img componentsSeparatedByString:@"/"] lastObject]];
+        fengmian.FrontCoverImage = imag;
+        fengmian.BAuthor  = self.dic[@"author"];
+        fengmian.BName = self.dic[@"bookname"];
+        return fengmian;
+    }
+    MoreViewController *more = [[MoreViewController alloc]init];
+    
+    more.content = self.pageContent[index][@"info"];
+    
+    return more;
+}
+
+- (NSInteger)indexOfViewController:(UIViewController *)viewcontroller{
+    
+    if ([viewcontroller isKindOfClass:[FengMianViewController class]]) {
+        _titleLabel.text = @"封面";
+        return 0;
+    }else{
+        
+    MoreViewController *more = (MoreViewController *)viewcontroller;
+    NSInteger index =[self.pageContent indexOfObject:more.content];
+    
+    NSLog(@"--index%ld ",(long)index);
+        
+    return index;
+
+    }
+    
+}
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController{
+
+    NSInteger index = [self indexOfViewController:viewController];
+
+    NSLog(@"After--index%ld ",(long)index);
+    
+    if (index == NSNotFound||index == (self.pageContent.count-1)) {
+        return nil  ;
+    }
+    index++;
+    
+    return [self viewControllerAtIndex:index];
+}
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController{
+    
+    NSInteger index = [self indexOfViewController:viewController];
+   
+    NSLog(@"Before--index%ld ",(long)index);
+
+    if (index == NSNotFound||index == 0) {
+        return nil  ;
+    }
+    index--;
+    
+    return [self viewControllerAtIndex:index];
+}
+#pragma action
 - (void)creatItem{
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"button_back_on"] style:UIBarButtonItemStylePlain target:self action:@selector(backClick)];
     
@@ -82,7 +169,7 @@
     self.navigationItem.rightBarButtonItem = rightItem;
     
     self.navigationController.hidesBarsOnTap = YES;
-
+    
     _titleLabel = [[UILabel alloc]init];
     _titleLabel.bounds = CGRectMake(0, 0, 100, 44);
     _titleLabel.text= @"封面";
@@ -98,52 +185,6 @@
     _pageNumberLabel.center  =CGPointMake(Screen_width-40, 42);
     [self.view addSubview:_pageNumberLabel];
 }
-- (MoreViewController *)viewControllerAtIndex:(NSInteger)index{
-    if (index>=self.pageContent.count||self.pageContent == 0) {
-        return nil ;
-    }
-    MoreViewController *more = [[MoreViewController alloc]init];
-    more.content = self.pageContent[index];
-    
-    return more;
-}
-
-- (NSInteger)indexOfViewController:(MoreViewController *)viewcontroller{
-    
-    NSInteger index =[self.pageContent indexOfObject:viewcontroller.content];
-    
-    NSLog(@"--index%ld ",(long)index);
-    
-    return index;
-    
-}
--(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController{
-
-    NSInteger index = [self indexOfViewController:(MoreViewController *)viewController];
-
-    NSLog(@"After--index%ld ",(long)index);
-    
-    if (index == NSNotFound||index == (self.pageContent.count-1)) {
-        return nil  ;
-    }
-    index++;
-    
-    return [self viewControllerAtIndex:index];
-}
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController{
-    
-    NSInteger index = [self indexOfViewController:(MoreViewController *)viewController];
-   
-    NSLog(@"Before--index%ld ",(long)index);
-
-    if (index == NSNotFound||index == 0) {
-        return nil  ;
-    }
-    index--;
-    
-    return [self viewControllerAtIndex:index];
-}
-#pragma action
 - (void)backClick{
     
     [self.navigationController popViewControllerAnimated:YES];
@@ -151,6 +192,7 @@
 - (void)rightBarButtonItemClick{
     
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

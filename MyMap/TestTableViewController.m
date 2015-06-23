@@ -56,14 +56,11 @@
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithTitle:@"续读" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemClick)];
     self.navigationItem.rightBarButtonItem = rightItem;
     
-    
     self.title = @"书架";
     
     NSString *path = [[NSBundle mainBundle] pathForResource:@"story" ofType:@"txt"];
     
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    
-    NSArray *array =[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    NSArray *array =[self JSONSerializationWithString:path];
     
     _tableViewData = [NSMutableArray arrayWithArray:array];
     
@@ -75,6 +72,14 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
 //     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+- (id)JSONSerializationWithString:(NSString*)jsonString{
+    
+    NSData *data = [NSData dataWithContentsOfFile:jsonString];
+
+    id obj =[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    
+    return obj;
 }
 - (void)leftItemClick{
     
