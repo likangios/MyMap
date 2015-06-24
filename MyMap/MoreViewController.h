@@ -11,4 +11,5 @@
 @interface MoreViewController : UIViewController
 
 @property (nonatomic,strong) NSString *content;
+@property (nonatomic,strong) NSDictionary *diction;
 @end

@@ -45,7 +45,7 @@
     _Book_intro = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(_FrontCover.frame), CGRectGetMaxY(_FrontCover.frame)+35, Screen_width-2*CGRectGetMinX(_FrontCover.frame), Screen_height-CGRectGetMaxY(_FrontCover.frame)-55)];
     _Book_intro.text = self.BIntroduction;
     _Book_intro.numberOfLines = 0;
-    _Book_intro.font = [UIFont systemFontOfSize:12];
+    _Book_intro.font = [UIFont systemFontOfSize:ContentFont_Size];
     _Book_intro.textAlignment = NSTextAlignmentLeft;
 
     [self.view addSubview:_Book_name];

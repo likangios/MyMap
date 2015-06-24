@@ -28,8 +28,16 @@
     return [documentDirectory stringByAppendingPathComponent:sender];
     
 }
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.hidesBarsOnTap = NO;
+
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.navigationItem.leftBarButtonItem.tintColor = [UIColor black50PercentColor];
+    
     /*
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"story" ofType:@"txt"];
     //gbk编码 如果txt文件为utf-8的则使用NSUTF8StringEncoding
@@ -111,14 +119,13 @@
         cell = [[TestTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
     [cell CleanImages];
+    
     [cell setBookclick:^(NSDictionary *dic){
         
     NSLog(@"dic is %@",dic[@"bookname"]);
-        
-        
-        ReadViewController *read = [[ReadViewController alloc]init];
-        read.dic = dic;
-        [self.navigationController pushViewController:read animated:YES];        
+    ReadViewController *read = [[ReadViewController alloc]init];
+    read.dic = dic;
+    [self.navigationController pushViewController:read animated:YES];
     }];
     cell.images = [self getDicArrayWithRow:indexPath.row];;
     

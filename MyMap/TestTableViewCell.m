@@ -60,6 +60,7 @@
     for (int i = 0; i<3;i++) {
         UIImageView *imageview = (UIImageView *)[_im1 viewWithTag:1<<i];
         imageview.image = nil;
+        imageview.superview.hidden = YES;
         imageview.hidden = YES;
     }
 }
@@ -68,6 +69,7 @@
     for (int i = 0; i<_images.count; i++) {
         UIImageView *imageview = (UIImageView *)[_im1 viewWithTag:1<<i];
         imageview.hidden = NO;
+        imageview.superview.hidden = NO;
         NSString *img = _images[i][@"img"];
         NSArray *arr = [img componentsSeparatedByString:@"/"];
         imageview.image = [UIImage imageNamed:arr[2]];

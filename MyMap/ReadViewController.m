@@ -24,52 +24,32 @@
     UILabel *_pageNumberLabel;
 }
 
-@property (nonatomic,strong) NSArray *pageContent;
+@property (nonatomic,strong) NSMutableArray *pageContent;
 
 @end
 
 @implementation ReadViewController
-
-
-- (id)JSONSerializationWithString:(NSString*)jsonString{
-    
-    NSData *data = [NSData dataWithContentsOfFile:jsonString];
-    
-    id obj =[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-    
-    return obj;
-}
-
-- (void)creatContentPages{
-    
-    
-    NSMutableArray *array = [NSMutableArray array];
-    
-    NSArray *txts = [[NSBundle mainBundle] pathsForResourcesOfType:@"txt" inDirectory:[NSString stringWithFormat:@"/novel_zip/novel_content/book_%@",self.dic[@"id"]]];
-    
-    NSDictionary *dic = [self JSONSerializationWithString:[txts lastObject]];
-
-    for (int i = 0; i<10; i++) {
-        
-        NSDictionary *diction = [[NSDictionary dictionaryWithDictionary:self.dic] mutableCopy];
-
-        [diction setValue:[NSString stringWithFormat:@"%d",i] forKey:@"customID"];
-        
-        [array addObject:diction];
-    }
-    _pageContent = [NSArray arrayWithArray:array];
-    
-    
-    
-    
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.hidesBarsOnTap = YES;
 }
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
-    [self creatContentPages];
+    
+    _pageContent = [NSMutableArray array];
+    
+    [_pageContent addObject:self.dic];
+
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [self creatContentPages];
+    });
+
     self.title = self.dic[@"bookname"];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor colorWithRed:.9 green:0.8 blue:0.7 alpha:1.0];
     [self creatItem];
+    
     
    _pageVC = [[UIPageViewController alloc]initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     _pageVC.view.frame = self.view.bounds;
@@ -96,17 +76,20 @@
         FengMianViewController *fengmian = [[FengMianViewController alloc]init];
         
         fengmian.BIntroduction = self.dic[@"info"];
+        fengmian.diction = self.pageContent[index];
         NSString *img = self.dic[@"img"];
-        UIImage *imag = [UIImage imageNamed:[[img componentsSeparatedByString:@"/"] lastObject]];
-        fengmian.FrontCoverImage = imag;
+//        UIImage *imag = [UIImage imageNamed:[[img componentsSeparatedByString:@"/"] lastObject]];
+        
+        fengmian.FrontCoverImage = [UIImage imageNamed:self.dic[@"img"]];
         fengmian.BAuthor  = self.dic[@"author"];
         fengmian.BName = self.dic[@"bookname"];
         return fengmian;
     }
+    
     MoreViewController *more = [[MoreViewController alloc]init];
     
-    more.content = self.pageContent[index][@"info"];
-    
+    more.content = self.pageContent[index][@"content"];
+    more.diction =self.pageContent[index];
     return more;
 }
 
@@ -114,11 +97,15 @@
     
     if ([viewcontroller isKindOfClass:[FengMianViewController class]]) {
         _titleLabel.text = @"封面";
+        _pageNumberLabel.text = @"1/1";
         return 0;
     }else{
+        MoreViewController *more = (MoreViewController *)viewcontroller;
+
+    _titleLabel.text = more.diction[@"title"];
+    _pageNumberLabel.text = more.diction[@"page"];
         
-    MoreViewController *more = (MoreViewController *)viewcontroller;
-    NSInteger index =[self.pageContent indexOfObject:more.content];
+    NSInteger index =[self.pageContent indexOfObject:more.diction];
     
     NSLog(@"--index%ld ",(long)index);
         
@@ -163,26 +150,24 @@
     
     
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"button_shuqian_on"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemClick)];
-    
     rightItem.tintColor = [UIColor grayColor];
-    
     self.navigationItem.rightBarButtonItem = rightItem;
-    
-    self.navigationController.hidesBarsOnTap = YES;
-    
+
     _titleLabel = [[UILabel alloc]init];
-    _titleLabel.bounds = CGRectMake(0, 0, 100, 44);
+    _titleLabel.bounds = CGRectMake(0, 0, 200, 44);
     _titleLabel.text= @"封面";
+    _titleLabel.font = [UIFont systemFontOfSize:13];
     _titleLabel.textAlignment = NSTextAlignmentCenter;
     _titleLabel.center = CGPointMake(Screen_width/2.0, 42);
     [self.view addSubview:_titleLabel];
     
     
     _pageNumberLabel  = [[UILabel alloc]init];
-    _pageNumberLabel.bounds = CGRectMake(0, 0, 30, 44);
+    _pageNumberLabel.bounds = CGRectMake(0, 0, 40, 44);
+    _pageNumberLabel.font = [UIFont systemFontOfSize:13];
     _pageNumberLabel.text = @"1/1";
     _pageNumberLabel.textAlignment = NSTextAlignmentRight;
-    _pageNumberLabel.center  =CGPointMake(Screen_width-40, 42);
+    _pageNumberLabel.center  =CGPointMake(Screen_width-10-CGRectGetWidth(_pageNumberLabel.frame)/2.0, 42);
     [self.view addSubview:_pageNumberLabel];
 }
 - (void)backClick{
@@ -196,6 +181,153 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (id)JSONSerializationWithString:(NSString*)jsonString{
+    
+    NSData *data = [NSData dataWithContentsOfFile:jsonString];
+    
+    id obj =[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    
+    return obj;
+}
+
+/**
+ *  PageVeiwController Data
+ */
+- (void)creatContentPages{
+    
+    NSArray *txts = [[NSBundle mainBundle] pathsForResourcesOfType:@"txt" inDirectory:[NSString stringWithFormat:@"/novel_zip/novel_content/book_%@",self.dic[@"id"]]];
+    
+    NSDictionary *chapters = [self JSONSerializationWithString:[txts lastObject]];
+    
+    for (int i = 0; i<txts.count;i++) {
+        
+        NSString *path = txts[i];
+        NSDictionary *dic = [self JSONSerializationWithString:path];
+        
+        NSArray *rangeArray = [self contentProcess:dic[@"content"]];
+        
+        for (int i = 0 ; i<rangeArray.count;i++ ) {
+            
+            NSString *string=  rangeArray[i];
+            
+            NSString *pageStr = [NSString stringWithFormat:@"%d/%lu",i+1,(unsigned long)rangeArray.count];
+            
+            NSDictionary *diction = [NSDictionary dictionaryWithObjectsAndKeys:dic[@"title"],@"title",string,@"content",pageStr,@"page", nil];
+            
+            [_pageContent addObject:diction];
+        }
+    }
+}
+
+/**
+ *  返回内容大小
+ *
+ *  @param str   内容
+ *  @param width 宽
+ *  @param font  字体
+ *
+ *  @return 返回--size
+ */
+-(CGSize)CalSizeByString:(NSString *)str ForWidth:(CGFloat)width ForFont:(UIFont *)font
+{
+    
+    CGSize constraint = CGSizeMake(width, CGFLOAT_MAX);
+    CGSize size;
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+        
+        //        NSAttributedString *attrStr = [[NSAttributedString alloc] initWithString:str];
+        //        NSRange range = NSMakeRange(0, attrStr.length);
+        //        NSDictionary *dic = [attrStr attributesAtIndex:0 effectiveRange:&range];   // 获取该段attributedString的属性字典
+        
+        
+        size = [str boundingRectWithSize:constraint options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:[NSDictionary dictionaryWithObjectsAndKeys:font,NSFontAttributeName, nil] context:nil].size;
+        
+    }
+    else
+        size = [str sizeWithFont:font constrainedToSize:constraint];
+    return size;
+    
+    
+}
+/**
+ *  文字处理
+ *
+ *  @param content 要处理的内容
+ *
+ *  @return 返回处理好的数组
+ */
+- (NSArray *)contentProcess:(NSString *)content{
+    
+    content = [content stringByReplacingOccurrencesOfString:@"<p>" withString:@""];
+    content = [content stringByReplacingOccurrencesOfString:@"</p>" withString:@"\n"];
+    content = [content stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
+    content = [content stringByReplacingOccurrencesOfString:@"<br />" withString:@"\n"];
+    content = [content stringByReplacingOccurrencesOfString:@"&ldquo;" withString:@"“"];
+    content = [content stringByReplacingOccurrencesOfString:@"&rdquo;" withString:@"”"];
+    content = [content stringByReplacingOccurrencesOfString:@"&quot;" withString:@"\""];
+    content = [content stringByReplacingOccurrencesOfString:@"&mdash;" withString:@"—"];
+    content = [content stringByReplacingOccurrencesOfString:@"&hellip;" withString:@"..."];
+    
+    //   内容长度
+    NSUInteger textLength = content.length;
+    
+    UIFont *font = [UIFont systemFontOfSize:ContentFont_Size];
+    
+    CGSize totalTextSize = [self CalSizeByString:content ForWidth:Screen_width-20 ForFont:font];
+    //    多少页
+    NSUInteger referTotalPages = totalTextSize.height/(Screen_height-70)+1;
+    //    每页多少字符
+    NSUInteger referCharatersPerpage = textLength/referTotalPages;
+    
+    NSMutableArray *array = [NSMutableArray array];
+    
+    
+    for(NSUInteger location = 0;location<textLength;){
+        NSRange  range = NSMakeRange(location, referCharatersPerpage);
+        
+        NSString *pageText;
+        
+        CGSize pageTextSize;
+        
+        while (range.location+range.length<textLength) {
+            pageText = [content substringWithRange:range];
+            pageTextSize = [self CalSizeByString:pageText ForWidth:Screen_width-20 ForFont:font];
+            NSLog(@"%f",Screen_height);
+            if (pageTextSize.height > (Screen_height-70)) {
+                
+                break;
+            }
+            else {
+                range.length += 10;
+            }
+        }
+        if (range.location+range.length>textLength) {
+            
+            range.length = textLength-range.location;
+        }
+        
+        while (range.length > 0) {
+            pageText = [content substringWithRange:range];
+            pageTextSize = [self CalSizeByString:pageText ForWidth:Screen_width-20 ForFont:font];
+            
+            if (pageTextSize.height <= Screen_height-70) {
+                range.length = [pageText length];
+                break;
+            }
+            else {
+                range.length -= 1;
+            }
+        }
+        
+        location +=range.length;
+        
+        [array addObject:pageText];
+        
+        
+    }
+    return array;
+    
 }
 
 /*

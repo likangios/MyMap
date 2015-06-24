@@ -10,6 +10,7 @@
 		BE12B06EF2F1F9BF18FEF0CE /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA174C9B5FAF6A44EA98256 /* libPods.a */; };
 		FE0370C71B2FD5C9008EB3B5 /* ReadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0370C61B2FD5C9008EB3B5 /* ReadViewController.m */; };
 		FE0700F31B395C39006481D9 /* novel_zip in Resources */ = {isa = PBXBuildFile; fileRef = FE0700F21B395C39006481D9 /* novel_zip */; };
+		FE147AB41B3AAD15006B2CAC /* Colours.m in Sources */ = {isa = PBXBuildFile; fileRef = FE147AB31B3AAD15006B2CAC /* Colours.m */; };
 		FE16DA141B2A797300DAB210 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE16DA131B2A797300DAB210 /* Images.xcassets */; };
 		FEB78EB71B3259B6006F68AB /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB78EB61B3259B6006F68AB /* MoreViewController.m */; };
 		FEC8160F1B2E73A800B3EF4B /* HttpActionMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC8160E1B2E73A800B3EF4B /* HttpActionMgr.m */; };
@@ -47,6 +48,8 @@
 		FE0370C51B2FD5C9008EB3B5 /* ReadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadViewController.h; sourceTree = "<group>"; };
 		FE0370C61B2FD5C9008EB3B5 /* ReadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadViewController.m; sourceTree = "<group>"; };
 		FE0700F21B395C39006481D9 /* novel_zip */ = {isa = PBXFileReference; lastKnownFileType = folder; path = novel_zip; sourceTree = "<group>"; };
+		FE147AB21B3AAD15006B2CAC /* Colours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colours.h; sourceTree = "<group>"; };
+		FE147AB31B3AAD15006B2CAC /* Colours.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Colours.m; sourceTree = "<group>"; };
 		FE16DA131B2A797300DAB210 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FEB78EB51B3259B5006F68AB /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
 		FEB78EB61B3259B6006F68AB /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreViewController.m; sourceTree = "<group>"; };
@@ -118,9 +121,19 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		FE147AB11B3AAD14006B2CAC /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				FE147AB21B3AAD15006B2CAC /* Colours.h */,
+				FE147AB31B3AAD15006B2CAC /* Colours.m */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
 		FE1A42E61B394E1C00CCB71E /* Resurces */ = {
 			isa = PBXGroup;
 			children = (
+				FE147AB11B3AAD14006B2CAC /* lib */,
 				FE0700F21B395C39006481D9 /* novel_zip */,
 			);
 			path = Resurces;
@@ -369,6 +382,7 @@
 				FE0370C71B2FD5C9008EB3B5 /* ReadViewController.m in Sources */,
 				FEDE11431B298DCA0057B585 /* TestTableViewCell.m in Sources */,
 				FEFC23DA1AFC60B3009C89ED /* ViewController.m in Sources */,
+				FE147AB41B3AAD15006B2CAC /* Colours.m in Sources */,
 				FEDE11401B298A960057B585 /* TestTableViewController.m in Sources */,
 				FEFC23D71AFC60B3009C89ED /* AppDelegate.m in Sources */,
 				FEC816121B2E7B0C00B3EF4B /* LActionBase.m in Sources */,

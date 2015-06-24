@@ -13,4 +13,5 @@
 @property (nonatomic,copy) NSString *BName;
 @property (nonatomic,copy) NSString *BAuthor;
 @property (nonatomic,copy) NSString *BIntroduction;
+@property (nonatomic,strong) NSDictionary *diction;
 @end
