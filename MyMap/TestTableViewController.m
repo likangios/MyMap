@@ -66,8 +66,10 @@
     
     self.title = @"书架";
     
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"story" ofType:@"txt"];
+//    NSString *path = [[NSBundle mainBundle] pathForResource:@"story" ofType:@"txt" ];
     
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"story" ofType:@"txt" inDirectory:@"novel_zip" ];
+
     NSArray *array =[self JSONSerializationWithString:path];
     
     _tableViewData = [NSMutableArray arrayWithArray:array];

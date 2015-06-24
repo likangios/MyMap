@@ -70,9 +70,7 @@
         UIImageView *imageview = (UIImageView *)[_im1 viewWithTag:1<<i];
         imageview.hidden = NO;
         imageview.superview.hidden = NO;
-        NSString *img = _images[i][@"img"];
-        NSArray *arr = [img componentsSeparatedByString:@"/"];
-        imageview.image = [UIImage imageNamed:arr[2]];
+        imageview.image = [UIImage imageNamed:_images[i][@"img"]];
     }
 }
 - (void)awakeFromNib {

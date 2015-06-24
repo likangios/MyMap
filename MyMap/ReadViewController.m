@@ -51,7 +51,7 @@
     [self creatItem];
     
     
-   _pageVC = [[UIPageViewController alloc]initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+   _pageVC = [[UIPageViewController alloc]initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     _pageVC.view.frame = self.view.bounds;
     _pageVC.doubleSided = YES;
     _pageVC.delegate = self;
@@ -203,6 +203,7 @@
     for (int i = 0; i<txts.count;i++) {
         
         NSString *path = txts[i];
+        
         NSDictionary *dic = [self JSONSerializationWithString:path];
         
         NSArray *rangeArray = [self contentProcess:dic[@"content"]];
