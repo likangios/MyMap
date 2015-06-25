@@ -30,6 +30,7 @@
     [self.view addSubview:_contentLabel];
     
 }
+
 -(CGSize)CalSizeByString:(NSString *)str ForWidth:(CGFloat)width ForFont:(UIFont *)font
 {
     

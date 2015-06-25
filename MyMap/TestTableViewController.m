@@ -31,6 +31,8 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.hidesBarsOnTap = NO;
+    self.navigationController.hidesBarsOnSwipe = NO;
+    self.navigationController.toolbarHidden = YES;
 
 }
 - (void)viewDidLoad {
@@ -125,9 +127,7 @@
     [cell setBookclick:^(NSDictionary *dic){
         
     NSLog(@"dic is %@",dic[@"bookname"]);
-    ReadViewController *read = [[ReadViewController alloc]init];
-    read.dic = dic;
-    [self.navigationController pushViewController:read animated:YES];
+        [self pushViewControllerWithID:dic[@"id"]];
     }];
     cell.images = [self getDicArrayWithRow:indexPath.row];;
     
@@ -135,6 +135,16 @@
 //    cell.textLabel.text = [NSString stringWithFormat:@"indexPath.row--%ld",(long)indexPath.row];
     
     return cell;
+}
+- (void)pushViewControllerWithID:(NSString *)bookId{
+    for (NSDictionary *dic in _tableViewData) {
+        if ([dic[@"id"] isEqualToString:bookId]) {
+            ReadViewController *read = [[ReadViewController alloc]init];
+            read.dic = dic;
+            [self.navigationController pushViewController:read animated:YES];
+            break;
+        }
+    }
 }
 - (NSArray *)getDicArrayWithRow:(NSInteger)row{
 
@@ -145,6 +155,7 @@
         
     }
     NSLog(@"row  is %d",row);
+    
     NSMutableArray *array = [NSMutableArray array];
     for (int i =0 ; i<imgcount; i++) {
         

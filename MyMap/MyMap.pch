@@ -25,7 +25,10 @@
 
 #define Screen_height [UIScreen mainScreen].bounds.size.height
 
-#define ContentFont_Size 14
+#define ContentFont_Size 16
+
+#define KBookMark @"bookmark"
+
 
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.

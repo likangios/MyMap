@@ -30,13 +30,13 @@
     
     [self.view addSubview:_FrontCover];
     
-    _Book_name = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_FrontCover.frame)+60, CGRectGetMinY(_FrontCover.frame)+30, 70, 25)];
+    _Book_name = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_FrontCover.frame)+30, CGRectGetMinY(_FrontCover.frame)+30, Screen_width-CGRectGetMaxX(_FrontCover.frame)-60, 25)];
     _Book_name.textAlignment = NSTextAlignmentCenter;
     _Book_name.font = [UIFont boldSystemFontOfSize:16];
     _Book_name.text = self.BName;
     
     
-    _Book_author = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(_Book_name.frame), CGRectGetMaxY(_Book_name.frame)+15, 70, 25)];
+    _Book_author = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(_Book_name.frame), CGRectGetMaxY(_Book_name.frame)+15, CGRectGetWidth(_Book_name.frame), 25)];
     _Book_author.textAlignment = NSTextAlignmentCenter;
     _Book_author.font = [UIFont systemFontOfSize:14];
     _Book_author.text = self.BAuthor;
@@ -51,6 +51,8 @@
     [self.view addSubview:_Book_name];
     [self.view addSubview:_Book_author];
     [self.view addSubview:_Book_intro];
+    
+    
     
     // Do any additional setup after loading the view.
 }
