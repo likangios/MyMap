@@ -70,13 +70,12 @@
     
    _pageVC = [[UIPageViewController alloc]initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     _pageVC.view.frame = self.view.bounds;
-    _pageVC.doubleSided = YES;
     _pageVC.delegate = self;
     _pageVC.dataSource = self;
 
     NSArray *arr = [NSArray arrayWithObjects:[self viewControllerAtIndex:0],nil];
    
-    [_pageVC setViewControllers:arr direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
+    [_pageVC setViewControllers:arr direction:UIPageViewControllerNavigationDirectionReverse|UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
     
     }];
     [self addChildViewController:_pageVC];
@@ -169,88 +168,13 @@
     NSInteger afterP = afterN.integerValue;
     return afterP;
 }
-- (void)buttonClick:(UIButton *)button{
-    switch (button.tag) {
-        case 1:{
-            if (_currentPage>0) {
-                
-            NSInteger beforP = [self getBeforPageWith:_currentPage];
-                typeof(self) _weakSelf = self;
-            UIViewController *vc = [self viewControllerAtIndex:beforP];
-            [_pageVC setViewControllers:@[vc] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:^(BOOL finished) {
-                _currentPage = beforP;
-                [_weakSelf changeTitleAndPage:beforP];
-            }];
-           
-            }
-            
-        }
-            NSLog(@"前一章");
-            break;
-        case 2:
-            NSLog(@"字体");
-            break;
-        case 3:
-            NSLog(@"亮度");
-            break;
-        case 4:{
-            NSLog(@"目录");
-            MuLuTableViewController *mulu = [[MuLuTableViewController alloc]init];
-            mulu.currentPage = _currentPage;
-            mulu.tableViewData = _directory;
-            [mulu setCellBlocks:^(NSDictionary *dic){
-                
-                NSNumber *selectPage = dic[@"startPage"];
-                NSInteger page = selectPage.integerValue;
-                typeof(self) _weakSelf = self;
-                
-                UIViewController *vc = [self viewControllerAtIndex:page];
-                [_pageVC setViewControllers:@[vc] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:^(BOOL finished) {
-                    _currentPage = page;
-                    [_weakSelf changeTitleAndPage:page];
-                    [_weakSelf.navigationController popViewControllerAnimated:YES];
-                }];
-            }];
-        
-            [self.navigationController pushViewController:mulu animated:YES];
-        }
-            break;
-            
-        case 5:    {
-            if ((_currentPage+1)<self.pageContent.count) {
-                typeof(self) _weakSelf = self;
 
-            NSInteger afterP = [self getAfterPageWith:_currentPage];
-            UIViewController *vc = [self viewControllerAtIndex:afterP];
-            [_pageVC setViewControllers:@[vc] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
-                _currentPage = afterP;
-            [_weakSelf changeTitleAndPage:afterP];
-            }];
-            }
-            NSLog(@"后一章");
-
-        }
-            break;
-            
-        default:
-            break;
-    }
-}
-- (void)HiddenBar{
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    [self.navigationController setToolbarHidden:self.navigationController.navigationBarHidden animated:YES];
-}
-- (void)tapClick{
-    
-    [self.navigationController setNavigationBarHidden:!self.navigationController.navigationBarHidden animated:YES];
-    [self.navigationController setToolbarHidden:self.navigationController.navigationBarHidden animated:YES];
-    
-}
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers{
     [self HiddenBar];
+    
 }
 -(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController{
-
+    
     NSInteger index = [self indexOfViewController:viewController];
     
     if (index == NSNotFound||index == (self.pageContent.count-1)) {
@@ -263,7 +187,7 @@
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController{
     
     NSInteger index = [self indexOfViewController:viewController];
-
+    
     if (index == NSNotFound||index == 0) {
         return nil  ;
     }
@@ -271,10 +195,11 @@
 
     return [self viewControllerAtIndex:index];
 }
+
+
 - (UIViewController *)viewControllerAtIndex:(NSInteger)index{
     
     if (index>=self.pageContent.count||self.pageContent == 0) {
-        
         return nil ;
     }
     if (index == 0) {
@@ -289,12 +214,11 @@
     MoreViewController *more = [[MoreViewController alloc]init];
     more.content = self.pageContent[index][@"content"];
     more.diction =self.pageContent[index];
-
     return more;
 }
 - (NSInteger)indexOfViewController:(UIViewController *)viewcontroller{
     
-    NSInteger index;
+    NSInteger index = 0;
     if ([viewcontroller isKindOfClass:[FengMianViewController class]]) {
         index =  0;
     }else{
@@ -321,11 +245,93 @@
     }
     
 }
-#pragma actio
+
+#pragma mark --ToolBarClick
+
+- (void)buttonClick:(UIButton *)button{
+    switch (button.tag) {
+        case 1:{
+            if (_currentPage>0) {
+                
+                NSInteger beforP = [self getBeforPageWith:_currentPage];
+                typeof(self) _weakSelf = self;
+                UIViewController *vc = [self viewControllerAtIndex:beforP];
+                [_pageVC setViewControllers:@[vc] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:^(BOOL finished) {
+                    _currentPage = beforP;
+                    [_weakSelf changeTitleAndPage:beforP];
+                }];
+                
+            }
+            
+        }
+            NSLog(@"前一章");
+            break;
+        case 2:
+            NSLog(@"字体");
+            break;
+        case 3:
+            NSLog(@"亮度");
+            break;
+        case 4:{
+            NSLog(@"目录");
+            MuLuTableViewController *mulu = [[MuLuTableViewController alloc]init];
+            mulu.currentPage = _currentPage;
+            mulu.tableViewData = _directory;
+            [mulu setCellBlocks:^(NSDictionary *dic){
+                NSNumber *selectPage = dic[@"startPage"];
+                NSInteger page = selectPage.integerValue;
+                typeof(self) _weakSelf = self;
+                
+                typeof(UIPageViewController) *_blockPage = _pageVC;
+                
+                UIViewController *vc = [self viewControllerAtIndex:page];
+                UIPageViewControllerNavigationDirection direction = page>_currentPage? UIPageViewControllerNavigationDirectionForward:UIPageViewControllerNavigationDirectionReverse;
+                
+                [_pageVC setViewControllers:@[vc] direction:direction animated:NO completion:^(BOOL finished) {
+                    
+                    _currentPage = page;
+                    [_weakSelf changeTitleAndPage:page];
+                }];
+            }];
+            [self.navigationController pushViewController:mulu animated:YES];
+        }
+            break;
+            
+        case 5:    {
+            if ((_currentPage+1)<self.pageContent.count) {
+                typeof(self) _weakSelf = self;
+                NSInteger afterP = [self getAfterPageWith:_currentPage];
+                UIViewController *vc = [self viewControllerAtIndex:afterP];
+                [_pageVC setViewControllers:@[vc] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished) {
+                    _currentPage = afterP;
+                    [_weakSelf changeTitleAndPage:afterP];
+                }];
+            }
+            NSLog(@"后一章");
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+- (void)HiddenBar{
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setToolbarHidden:self.navigationController.navigationBarHidden animated:YES];
+}
+- (void)tapClick{
+    [self.navigationController setNavigationBarHidden:!self.navigationController.navigationBarHidden animated:YES];
+    [self.navigationController setToolbarHidden:self.navigationController.navigationBarHidden animated:YES];
+}
+#pragma mark --back
+
 - (void)backClick{
     
     [self.navigationController popViewControllerAnimated:YES];
 }
+#pragma add BookMark
+
 - (void)rightBarButtonItemClick{
     
     NSMutableDictionary *shuqian = [NSMutableDictionary dictionaryWithDictionary:self.pageContent[_currentPage]];
@@ -351,6 +357,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#pragma mark JSON
+
 - (id)JSONSerializationWithString:(NSString*)jsonString{
     
     NSData *data = [NSData dataWithContentsOfFile:jsonString];
@@ -363,6 +371,7 @@
 /**
  *  PageVeiwController Data
  */
+#pragma mark Data
 - (void)creatContentPages{
     
     NSArray *txts = [[NSBundle mainBundle] pathsForResourcesOfType:@"txt" inDirectory:[NSString stringWithFormat:@"/novel_zip/novel_content/book_%@",self.dic[@"id"]]];
@@ -372,6 +381,7 @@
     _directory = [NSMutableArray array];
     
         NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"封面",@"title",[NSNumber numberWithInteger:0],@"startPage",[NSNumber numberWithInteger:0],@"endPage",nil];
+    
     [_directory addObject:dic];
     for (int i = 0; i<txts.count-1;i++) {
         
@@ -388,13 +398,9 @@
         
         [_directory addObject:diction];
         for (int i = 0 ; i<rangeArray.count;i++ ) {
-            
             NSString *string=  rangeArray[i];
-            
             NSString *pageStr = [NSString stringWithFormat:@"%d/%lu",i+1,(unsigned long)rangeArray.count];
-            
             NSDictionary *diction = [NSDictionary dictionaryWithObjectsAndKeys:dic[@"title"],@"title",string,@"content",pageStr,@"page",[NSNumber numberWithInteger:startPage],@"startPage",[NSNumber numberWithInteger:endPage],@"endPage", nil];
-            
             [_pageContent addObject:diction];
         }
     }
@@ -502,12 +508,21 @@
         
         location +=range.length;
         
-        [array addObject:pageText];
-        
+        if ([self notNill:pageText]) {
+            [array addObject:pageText];
+        }
         
     }
     return array;
     
+}
+- (BOOL)notNill:(NSString *)text{
+    text = [text stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+    
+    text = [text stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    if (text.length)
+        return YES;
+    return NO;
 }
 
 /*

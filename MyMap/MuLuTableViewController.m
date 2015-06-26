@@ -7,6 +7,8 @@
 //
 
 #import "MuLuTableViewController.h"
+#import "ShuQianViewController.h"
+
 
 @interface MuLuTableViewController ()
 
@@ -24,13 +26,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"button_shuqian_on"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemClick)];
+    rightItem.tintColor = [UIColor grayColor];
+    
+    self.navigationItem.rightBarButtonItem = rightItem;
+    
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
+- (void)rightBarButtonItemClick{
+    
+    ShuQianViewController *shuqian = [[ShuQianViewController alloc]init];
 
+    [self.navigationController pushViewController:shuqian animated:YES];
+    
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -72,6 +86,10 @@
     if (self.cellBlocks) {
         _cellBlocks(dic);
     }
+    [self.navigationController popViewControllerAnimated:YES];
+}
+-(void)pop{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (BOOL)isShowAccessory:(NSInteger)index{
     

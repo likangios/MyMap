@@ -3,12 +3,41 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "-[ShuQianViewController viewDidLoad]:ShuQianViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__34-[ReadViewController buttonClick:]_block_invoke_2:ReadViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ReadViewController pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:]:ReadViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ReadViewController viewControllerAtIndex:]:ReadViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "-[TestTableViewCell CleanImages]:TestTableViewCell.m">
          <PersistentStrings>
             <PersistentString
                value = "">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__34-[ReadViewController buttonClick:]_block_invoke204:ReadViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ReadViewController pageViewController:viewControllerBeforeViewController:]:ReadViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__34-[ReadViewController buttonClick:]_block_invoke246:ReadViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ReadViewController pageViewController:viewControllerAfterViewController:]:ReadViewController.m">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

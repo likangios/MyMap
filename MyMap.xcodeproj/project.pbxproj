@@ -168,9 +168,9 @@
 		FE16DA141B2A797300DAB210 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE16DA131B2A797300DAB210 /* Images.xcassets */; };
 		FE47AA911B3BFD0E000B1BFE /* MuLuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE47AA901B3BFD0E000B1BFE /* MuLuTableViewController.m */; };
 		FEB78EB71B3259B6006F68AB /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB78EB61B3259B6006F68AB /* MoreViewController.m */; };
+		FEC7FAE11B3D53060031F4E5 /* ShuQianViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC7FAE01B3D53060031F4E5 /* ShuQianViewController.m */; };
 		FEC8160F1B2E73A800B3EF4B /* HttpActionMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC8160E1B2E73A800B3EF4B /* HttpActionMgr.m */; };
 		FEC816121B2E7B0C00B3EF4B /* LActionBase.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC816111B2E7B0C00B3EF4B /* LActionBase.m */; };
-		FECA36331B3BDF6600F7817B /* ShuQianViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FECA36321B3BDF6600F7817B /* ShuQianViewController.m */; };
 		FECDC5C11B38F3A8004BC0FA /* FengMianViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FECDC5C01B38F3A8004BC0FA /* FengMianViewController.m */; };
 		FEDCFEFD1B01A8AB00EED8C5 /* aaimageview.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDCFEFC1B01A8AB00EED8C5 /* aaimageview.m */; };
 		FEDDC6D31B31165E00219537 /* BitMask.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDDC6D11B31165E00219537 /* BitMask.m */; };
@@ -366,12 +366,12 @@
 		FEB78EB51B3259B5006F68AB /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
 		FEB78EB61B3259B6006F68AB /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreViewController.m; sourceTree = "<group>"; };
 		FEB78EEA1B32A0E1006F68AB /* MyMap.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyMap.pch; sourceTree = "<group>"; };
+		FEC7FADF1B3D53050031F4E5 /* ShuQianViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuQianViewController.h; sourceTree = "<group>"; };
+		FEC7FAE01B3D53060031F4E5 /* ShuQianViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuQianViewController.m; sourceTree = "<group>"; };
 		FEC8160D1B2E73A800B3EF4B /* HttpActionMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpActionMgr.h; sourceTree = "<group>"; };
 		FEC8160E1B2E73A800B3EF4B /* HttpActionMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpActionMgr.m; sourceTree = "<group>"; };
 		FEC816101B2E7B0C00B3EF4B /* LActionBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LActionBase.h; sourceTree = "<group>"; };
 		FEC816111B2E7B0C00B3EF4B /* LActionBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LActionBase.m; sourceTree = "<group>"; };
-		FECA36311B3BDF6600F7817B /* ShuQianViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuQianViewController.h; sourceTree = "<group>"; };
-		FECA36321B3BDF6600F7817B /* ShuQianViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuQianViewController.m; sourceTree = "<group>"; };
 		FECDC5BF1B38F3A7004BC0FA /* FengMianViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FengMianViewController.h; sourceTree = "<group>"; };
 		FECDC5C01B38F3A8004BC0FA /* FengMianViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FengMianViewController.m; sourceTree = "<group>"; };
 		FEDCFEFB1B01A8AB00EED8C5 /* aaimageview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aaimageview.h; sourceTree = "<group>"; };
@@ -666,8 +666,8 @@
 				FECDC5C01B38F3A8004BC0FA /* FengMianViewController.m */,
 				FEB78EB51B3259B5006F68AB /* MoreViewController.h */,
 				FEB78EB61B3259B6006F68AB /* MoreViewController.m */,
-				FECA36311B3BDF6600F7817B /* ShuQianViewController.h */,
-				FECA36321B3BDF6600F7817B /* ShuQianViewController.m */,
+				FEC7FADF1B3D53050031F4E5 /* ShuQianViewController.h */,
+				FEC7FAE01B3D53060031F4E5 /* ShuQianViewController.m */,
 				FE47AA8F1B3BFD0E000B1BFE /* MuLuTableViewController.h */,
 				FE47AA901B3BFD0E000B1BFE /* MuLuTableViewController.m */,
 				FEDE6C081B2A775100EBE115 /* Default-568h@2x.png */,
@@ -1017,12 +1017,12 @@
 				FEDE11431B298DCA0057B585 /* TestTableViewCell.m in Sources */,
 				FEFC23DA1AFC60B3009C89ED /* ViewController.m in Sources */,
 				FE147AB41B3AAD15006B2CAC /* Colours.m in Sources */,
+				FEC7FAE11B3D53060031F4E5 /* ShuQianViewController.m in Sources */,
 				FEDE11401B298A960057B585 /* TestTableViewController.m in Sources */,
 				FEFC23D71AFC60B3009C89ED /* AppDelegate.m in Sources */,
 				FEC816121B2E7B0C00B3EF4B /* LActionBase.m in Sources */,
 				FEDDC6D31B31165E00219537 /* BitMask.m in Sources */,
 				FEFC23D41AFC60B3009C89ED /* main.m in Sources */,
-				FECA36331B3BDF6600F7817B /* ShuQianViewController.m in Sources */,
 				FEB78EB71B3259B6006F68AB /* MoreViewController.m in Sources */,
 				FEC8160F1B2E73A800B3EF4B /* HttpActionMgr.m in Sources */,
 				FE47AA911B3BFD0E000B1BFE /* MuLuTableViewController.m in Sources */,
